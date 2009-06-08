@@ -89,6 +89,7 @@ function PanoJS(viewer, options) {
     this.imgsize = { 'x' : 0, 'y' : 0 };
     this.imgsize.x = (typeof options.imageWidth == 'undefined' ? -1 : parseInt(options.imageWidth));
     this.imgsize.y = (typeof options.imageHeight == 'undefined' ? -1 : parseInt(options.imageHeight));
+    this.scaleSize = { 'x' : 0, 'y' : 0 };
 
     this.initialized = false;
     this.surface = null;
@@ -234,6 +235,8 @@ PanoJS.prototype = {
             this.height = this.viewer.offsetHeight;
         }
 
+        this.calcScale();
+
         var fullSize = this.tileSize;
         // explicit set of zoom level
         if (this.zoomLevel >= 0 && this.zoomLevel <= this.maxZoomLevel) {
@@ -255,21 +258,12 @@ PanoJS.prototype = {
             }
         }
 
-//fixme fullsize not used anymore?
+        //fixme fullsize from above not used anymore?
+
 
         // calculate the center
-        this.x = 0;
-        this.y = 0;
-        var inv = Math.max(this.imgsize.x,this.imgsize.y)  /
-                  (this.tileSize * Math.pow(2, this.zoomLevel));
-        if(this.imgsize.x){
-            var xx = (this.imgsize.x / inv)*0.5;
-            this.x = Math.floor(xx - this.width * 0.5) * -1;
-        }
-        if(this.imgsize.y){
-            var yy = (this.imgsize.y / inv)*0.5;
-            this.y = Math.floor(yy - this.height * 0.5) * -1;
-        }
+        this.x = Math.floor(this.scaleSize.x * 0.5 - this.width * 0.5) * -1;
+        this.y = Math.floor(this.scaleSize.y * 0.5 - this.height * 0.5) * -1;
 
 
         // offset of viewer in the window
@@ -303,6 +297,13 @@ PanoJS.prototype = {
         this.surface.style.cursor = PanoJS.GRAB_MOUSE_CURSOR;
         this.prepareTiles();
         this.initialized = true;
+    },
+
+    calcScale : function(){
+        var inv = Math.max(this.imgsize.x,this.imgsize.y)  /
+                  (this.tileSize * Math.pow(2, this.zoomLevel));
+        this.scaleSize.x = this.imgsize.x / inv;
+        this.scaleSize.y = this.imgsize.y / inv;
     },
 
     prepareTiles : function() {
@@ -458,8 +459,8 @@ PanoJS.prototype = {
         if (!useBlankImage) {
             var left = tile.xIndex < 0;
             var high = tile.yIndex < 0;
-            var right = tile.xIndex >= Math.pow(2, this.zoomLevel);
-            var low = tile.yIndex >= Math.pow(2, this.zoomLevel);
+            var right = tile.xIndex >= this.scaleSize.x / this.tileSize;
+            var low = tile.yIndex >= this.scaleSize.y / this.tileSize;
             if (high || left || low || right) {
                 useBlankImage = true;
             }
@@ -610,6 +611,7 @@ PanoJS.prototype = {
         this.x = coords.x - after.x;
         this.y = coords.y - after.y;
         this.zoomLevel += direction;
+        this.calcScale();
         this.positionTiles();
 
         this.notifyViewerZoomed();
