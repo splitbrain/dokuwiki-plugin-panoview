@@ -135,7 +135,7 @@ PanoJS.REVISION_FLAG = '';
 // CSS definition settings
 PanoJS.SURFACE_STYLE_CLASS = 'surface';
 PanoJS.WELL_STYLE_CLASS = 'well';
-PanoJS.CONTROLS_STYLE_CLASS = 'controls'
+PanoJS.CONTROLS_STYLE_CLASS = 'controls';
 PanoJS.TILE_STYLE_CLASS = 'tile';
 
 // language settings
@@ -179,7 +179,7 @@ PanoJS.isInstance = function(object, clazz) {
     }
 
     return false;
-}
+};
 
 PanoJS.prototype = {
 
@@ -519,7 +519,7 @@ PanoJS.prototype = {
 
                 tileImg.onload = function() {};
                 return false;
-            }
+            };
 
             // konqueror only recognizes the onload event on an Image
             // javascript object, so we must handle that case here
@@ -694,7 +694,7 @@ PanoJS.prototype = {
             motion = {
                 'x' : Math.min(x, Math.abs(target.x)) * (target.x < 0 ? -1 : 1),
                 'y' : Math.min(y, Math.abs(target.y)) * (target.y < 0 ? -1 : 1)
-            }
+            };
         }
 
         this.positionTiles(motion, true);
@@ -767,7 +767,7 @@ PanoJS.prototype = {
         return {
             'x' : (e.pageX || (e.clientX + (document.documentElement.scrollLeft || document.body.scrollLeft))) - this.left,
             'y' : (e.pageY || (e.clientY + (document.documentElement.scrollTop || document.body.scrollTop))) - this.top
-        }
+        };
     },
 
     press : function(coords) {
@@ -824,7 +824,7 @@ PanoJS.prototype = {
 PanoJS.TileUrlProvider = function(baseUri, image) {
     this.baseUri = baseUri;
     this.image   = image;
-}
+};
 
 PanoJS.TileUrlProvider.prototype = {
     assembleUrl: function(xIndex, yIndex, zoom) {
@@ -832,7 +832,7 @@ PanoJS.TileUrlProvider.prototype = {
                zoom + '-' + xIndex + '-' + yIndex +
                '&image=' + encodeURIComponent(this.image);
     }
-}
+};
 
 PanoJS.mousePressedHandler = function(e) {
     e = e ? e : window.event;
@@ -907,7 +907,7 @@ PanoJS.keyboardMoveHandler = function(e) {
         if (e.keyCode == 37)
                 viewer.positionTiles({'x': PanoJS.MOVE_THROTTLE,'y': 0}, true);
     }
-}
+};
 
 PanoJS.keyboardZoomHandler = function(e) {
     e = e ? e : window.event;
@@ -918,7 +918,7 @@ PanoJS.keyboardZoomHandler = function(e) {
         if (e.keyCode == 107)
                 viewer.zoom(1);
     }
-}
+};
 
 PanoJS.MoveEvent = function(x, y) {
     this.x = x;
