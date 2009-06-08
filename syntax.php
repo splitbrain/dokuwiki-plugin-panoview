@@ -106,9 +106,17 @@ class syntax_plugin_panoview extends DokuWiki_Syntax_Plugin {
                     ml($data['image'], array('w'=>$data['width'],'h'=>$data['height'])).'" width="'.
                     $data['width'].'" height="'.$data['height'].'" alt="" /></a>';
 
+        if($data['align'] == 1){
+            $align = 'medialeft';
+        }elseif($data['align'] == 2){
+            $align = 'mediaright';
+        }else{
+            $align = 'mediacenter';
+        }
+
 
         $R->doc .= '
-            <div class="panoview_plugin" style="width: '.$data['width'].'px; height: '.$data['height'].'px;">
+            <div class="panoview_plugin '.$align.'" style="width: '.$data['width'].'px; height: '.$data['height'].'px;">
               <div class="well"><!-- --></div>
               <div class="surface">'.$img.'</div>
               <p class="controls" style="display: none">
