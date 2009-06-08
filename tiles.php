@@ -37,6 +37,7 @@ session_write_close();
     $data['tly']   = (int) ($data['row'] * $data['ts'] * $data['inv']);
     $data['brx']   = (int) ($data['tlx'] + ($data['ts'] * $data['inv']));
     $data['bry']   = (int) ($data['tly'] + ($data['ts'] * $data['inv']));
+    if($data['tlx'] > $data['width'] || $data['tly'] > $data['height']) gfx_error('blank');
 
     // cache times
     $data['cache']  = getCacheName($data['file'],'.pv.'.$data['zoom'].'-'.$data['col'].'-'.$data['row'].'.jpg');
