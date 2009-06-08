@@ -1,5 +1,11 @@
 /**
+ * PanoView Plugin Script
+ *
+ * This is a modified version of
  * Panoramic JavaScript Image Viewer (PanoJS) 1.0.2
+ *
+ *
+ * Orginal Description and copyright notices follow:
  *
  * Generates a draggable and zoomable viewer for images that would
  * be otherwise too large for a browser window.  Examples would include
