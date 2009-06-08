@@ -94,14 +94,15 @@ function tile_im($d){
 
     $cmd  = $conf['im_convert'];
     $cmd .= ' '.escapeshellarg($d['file']);
-    $cmd .= ' -crop '.abs($d['brx'] - $d['tlx']).'x'.abs($d['bry'] - $d['tly']).'!+'.$d['tlx'].'+'.$d['tly'];
-
-    $cmd .= ' -resize '.$d['ts'].'x'.$d['ts'].'!';
+    $cmd .= ' -crop \''.abs($d['brx'] - $d['tlx']).'x'.abs($d['bry'] - $d['tly']).'!+'.$d['tlx'].'+'.$d['tly'].'\'';
+    $cmd .= ' -background black';
+    $cmd .= ' -extent \''.abs($d['brx'] - $d['tlx']).'x'.abs($d['bry'] - $d['tly']).'!\'';
+    $cmd .= ' -resize \''.$d['ts'].'x'.$d['ts'].'!\'';
 
     $cmd .= ' -quality '.$conf['jpg_quality'];
     $cmd .= ' '.escapeshellarg($d['cache']);
 
-    #dbg($cmd); exit;
+#    dbg($cmd); exit;
 
     @exec($cmd,$out,$retval);
     if ($retval == 0) return true;
