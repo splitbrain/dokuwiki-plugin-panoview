@@ -5,4 +5,4 @@ email  andi@splitbrain.org
 date   2009-06-08
 name   PanoView Plugin
 desc   View large images in a pannable view
-url    http://wiki.splitbrain.org/plugin:panoview
+url    http://www.dokuwiki.org/plugin:panoview
