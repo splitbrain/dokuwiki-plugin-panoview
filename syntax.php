@@ -87,13 +87,13 @@ class syntax_plugin_panoview extends DokuWiki_Syntax_Plugin {
         require_once(DOKU_INC.'inc/JSON.php');
         $json = new JSON();
 
-        $img = '<img src="'.ml($data['image'],array('w'=>$data['width'],'h'=>$data['height'])).'" width="'.$data['width'].'" height="'.$data['height'].'" alt="" />';
+        $img = '<a href="'.ml($data['image']).'"><img src="'.ml($data['image'],array('w'=>$data['width'],'h'=>$data['height'])).'" width="'.$data['width'].'" height="'.$data['height'].'" alt="" /></a>';
 
 
         $R->doc .= '
 <div class="panoview_plugin" style="width: '.$data['width'].'px; height: '.$data['height'].'px;">
-  <div class="well">'.$img.'</div>
-  <div class="surface"><!-- --></div>
+  <div class="well"><!-- --></div>
+  <div class="surface">'.$img.'</div>
   <p class="controls" style="display: none">
     <span class="zoomIn" title="Zoom In">+</span>
     <span class="zoomOut" title="Zoom Out">-</span>

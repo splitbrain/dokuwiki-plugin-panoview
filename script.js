@@ -282,12 +282,12 @@ PanoJS.prototype = {
             if (child.className == PanoJS.SURFACE_STYLE_CLASS) {
                 this.surface = child;
                 child.backingBean = this;
+                // empty surface
+                child.innerHTML = '';
             }
             else if (child.className == PanoJS.WELL_STYLE_CLASS) {
                 this.well = child;
                 child.backingBean = this;
-                // empty well
-                child.innerHTML = '';
             }
             else if (child.className == PanoJS.CONTROLS_STYLE_CLASS) {
                 child.style.display = '';
