@@ -45,7 +45,11 @@ session_write_close();
 
     // (re)generate
     if( ($data['cachet'] < $data['mtime']) || ($data['cachet'] < $data['selft']) ){
-        tile_gd($data);
+        if($conf['im_convert']){
+            tile_im($data);
+        }else{
+            tile_gd($data);
+        }
     }
 
     // send
@@ -61,6 +65,8 @@ session_write_close();
 
 
 function tile_gd($d){
+    global $conf;
+
     $img = null;
     if(preg_match('/\.jpe?g$/',$d['file'])){
         $img   = @imagecreatefromjpeg($d['file']);
@@ -77,9 +83,32 @@ function tile_gd($d){
     $scale = image_scale($crop,abs($d['brx'] - $d['tlx']),abs($d['bry'] - $d['tly']),$d['ts'],$d['ts']);
     imagedestroy($crop);
 
-    imagejpeg($scale,$d['cache']);
+    imagejpeg($scale,$d['cache'],$conf['jpg_quality']);
     imagedestroy($scale);
+
+    if($conf['fperm']) chmod($d['cache'], $conf['fperm']);
 }
+
+function tile_im($d){
+    global $conf;
+
+    $cmd  = $conf['im_convert'];
+    $cmd .= ' '.escapeshellarg($d['file']);
+    $cmd .= ' -crop '.abs($d['brx'] - $d['tlx']).'x'.abs($d['bry'] - $d['tly']).'!+'.$d['tlx'].'+'.$d['tly'];
+
+    $cmd .= ' -resize '.$d['ts'].'x'.$d['ts'].'!';
+
+    $cmd .= ' -quality '.$conf['jpg_quality'];
+    $cmd .= ' '.escapeshellarg($d['cache']);
+
+    #dbg($cmd); exit;
+
+    @exec($cmd,$out,$retval);
+    if ($retval == 0) return true;
+    gfx_error('generic');
+}
+
+
 
 function image_scale($image,$x,$y,$w,$h){
     $scale=imagecreatetruecolor($w,$h);
