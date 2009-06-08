@@ -459,8 +459,8 @@ PanoJS.prototype = {
         if (!useBlankImage) {
             var left = tile.xIndex < 0;
             var high = tile.yIndex < 0;
-            var right = tile.xIndex >= this.scaleSize.x / this.tileSize;
-            var low = tile.yIndex >= this.scaleSize.y / this.tileSize;
+            var right = tile.xIndex >= Math.ceil(this.scaleSize.x / this.tileSize);
+            var low = tile.yIndex >= Math.ceil(this.scaleSize.y / this.tileSize);
             if (high || left || low || right) {
                 useBlankImage = true;
             }
