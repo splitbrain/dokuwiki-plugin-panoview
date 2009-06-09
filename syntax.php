@@ -98,11 +98,11 @@ class syntax_plugin_panoview extends DokuWiki_Syntax_Plugin {
      */
     function render($mode, &$R, $data) {
         if($mode != 'xhtml') return false;
-
+        global $ID;
         require_once(DOKU_INC.'inc/JSON.php');
         $json = new JSON();
 
-        $img = '<a href="'.ml($data['image']).'"><img src="'.
+        $img = '<a href="'.ml($data['image'],array('id'=>$ID),false).'"><img src="'.
                     ml($data['image'], array('w'=>$data['width'],'h'=>$data['height'])).'" width="'.
                     $data['width'].'" height="'.$data['height'].'" alt="" /></a>';
 
