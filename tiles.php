@@ -42,10 +42,9 @@ session_write_close();
     // cache times
     $data['cache']  = getCacheName($data['file'],'.pv.'.$data['zoom'].'-'.$data['col'].'-'.$data['row'].'.jpg');
     $data['cachet'] = @filemtime($data['cache']);
-    $data['selft']  = filemtime(__FILE__);
 
     // (re)generate
-    if( ($data['cachet'] < $data['mtime']) || ($data['cachet'] < $data['selft']) ){
+    if($data['cachet'] < $data['mtime']){
         if($conf['im_convert']){
             tile_im($data);
         }else{

@@ -2,7 +2,7 @@
 
 author Andreas Gohr
 email  andi@splitbrain.org
-date   2009-06-08
+date   2009-06-09
 name   PanoView Plugin
 desc   View large images in a pannable view
 url    http://www.dokuwiki.org/plugin:panoview
