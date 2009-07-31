@@ -98,7 +98,7 @@ class syntax_plugin_panoview extends DokuWiki_Syntax_Plugin {
             $data['initialZoom'] = $match[1];
         }
         if($data['initialZoom'] < 0) $data['initialZoom'] = 0;
-        if($data['initialZoom'] > $data['maxZoom']) = $data['maxZoom'];
+        if($data['initialZoom'] > $data['maxZoom']) $data['initialZoom'] = $data['maxZoom'];
 
         return $data;
     }
