@@ -59,7 +59,7 @@ class syntax_plugin_panoview extends DokuWiki_Syntax_Plugin {
             'width'         => 500,
             'height'        => 250,
             'align'         => 0,
-            'initialZoom'   => 2,
+            'initialZoom'   => 1,
             'tileBaseUri'   => DOKU_BASE.'lib/plugins/panoview/tiles.php',
             'tileSize'      => 256,
             'maxZoom'       => 10,
@@ -84,11 +84,21 @@ class syntax_plugin_panoview extends DokuWiki_Syntax_Plugin {
         $file = mediaFN($data['image']);
         list($data['imageWidth'],$data['imageHeight']) = @getimagesize($file);
 
+        // calculate maximum zoom
+        $data['maxZoom'] = floor(sqrt(max($data['imageWidth'],$data['imageHeight'])/$data['tileSize']))-1;
+
         // size
-        if(preg_match('/^(\d+)[xX](\d+)$/',$params,$match)){
+        if(preg_match('/\b(\d+)[xX](\d+)\b/',$params,$match)){
             $data['width']  = $match[1];
             $data['height'] = $match[2];
         }
+
+        // initial zoom
+        if(preg_match('/\b[zZ](\d+)\b/',$params,$match)){
+            $data['initialZoom'] = $match[1];
+        }
+        if($data['initialZoom'] < 0) $data['initialZoom'] = 0;
+        if($data['initialZoom'] > $data['maxZoom']) = $data['maxZoom'];
 
         return $data;
     }
