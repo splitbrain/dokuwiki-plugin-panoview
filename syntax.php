@@ -13,12 +13,6 @@ require_once(DOKU_INC.'inc/search.php');
 require_once(DOKU_INC.'inc/JpegMeta.php');
 
 class syntax_plugin_panoview extends DokuWiki_Syntax_Plugin {
-    /**
-     * return some info
-     */
-    function getInfo(){
-        return confToHash(dirname(__FILE__).'/info.txt');
-    }
 
     /**
      * What kind of syntax are we?

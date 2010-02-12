@@ -1,5 +1,5 @@
 # General Plugin Info do not edit
-
+base   panoview
 author Andreas Gohr
 email  andi@splitbrain.org
 date   2009-07-31
