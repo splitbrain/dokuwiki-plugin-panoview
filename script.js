@@ -92,10 +92,10 @@ function PanoJS(viewer, options) {
         this.zoomLevel = this.maxZoomLevel;
     }
 
-    this.imgsize = { 'x' : 0, 'y' : 0 };
+    this.imgsize = { 'x': 0, 'y': 0 };
     this.imgsize.x = (typeof options.imageWidth == 'undefined' ? -1 : parseInt(options.imageWidth));
     this.imgsize.y = (typeof options.imageHeight == 'undefined' ? -1 : parseInt(options.imageHeight));
-    this.scaleSize = { 'x' : 0, 'y' : 0 };
+    this.scaleSize = { 'x': 0, 'y': 0 };
 
     this.initialized = false;
     this.surface = null;
@@ -107,7 +107,7 @@ function PanoJS(viewer, options) {
     this.x = 0;
     this.y = 0;
     this.border = -1;
-    this.mark = { 'x' : 0, 'y' : 0 };
+    this.mark = { 'x': 0, 'y': 0 };
     this.pressed = false;
     this.tiles = [];
     this.cache = {};
@@ -155,7 +155,7 @@ PanoJS.TILE_EXTENSION = 'jpg';
 PanoJS.TILE_SIZE = 256;
 PanoJS.BLANK_TILE_IMAGE = 'blank.gif';
 PanoJS.LOADING_TILE_IMAGE = 'blank.gif';
-PanoJS.INITIAL_PAN = { 'x' : .5, 'y' : .5 };
+PanoJS.INITIAL_PAN = { 'x': .5, 'y': .5 };
 PanoJS.USE_LOADER_IMAGE = true;
 PanoJS.USE_SLIDE = true;
 PanoJS.USE_KEYBOARD = true;
@@ -174,7 +174,7 @@ PanoJS.GRABBING_MOUSE_CURSOR = (navigator.userAgent.search(/KHTML|Opera/i) >= 0 
 PanoJS.VIEWERS = [];
 
 // utility functions
-PanoJS.isInstance = function(object, clazz) {
+PanoJS.isInstance = function (object, clazz) {
     // FIXME: can this just be replaced with instanceof operator? It has been reported that __proto__ is specific to Netscape
     while (object != null) {
         if (object == clazz.prototype) {
@@ -196,7 +196,7 @@ PanoJS.prototype = {
      * This method should be called prior to init()
      * FIXME: option to hide viewer to prevent scrollbar interference
      */
-    fitToWindow : function(border) {
+    fitToWindow: function (border) {
         if (typeof border != 'number' || border < 0) {
             border = 0;
         }
@@ -231,9 +231,11 @@ PanoJS.prototype = {
         this.viewer.style.left = border + 'px';
     },
 
-    init : function() {
+    init: function () {
         if (document.attachEvent) {
-            document.body.ondragstart = function() { return false; }
+            document.body.ondragstart = function () {
+                return false;
+            }
         }
 
         if (this.width == 0 && this.height == 0) {
@@ -305,14 +307,14 @@ PanoJS.prototype = {
         this.initialized = true;
     },
 
-    calcScale : function(){
-        var inv = Math.max(this.imgsize.x,this.imgsize.y)  /
-                  (this.tileSize * Math.pow(2, this.zoomLevel));
+    calcScale: function () {
+        var inv = Math.max(this.imgsize.x, this.imgsize.y) /
+            (this.tileSize * Math.pow(2, this.zoomLevel));
         this.scaleSize.x = this.imgsize.x / inv;
         this.scaleSize.y = this.imgsize.y / inv;
     },
 
-    prepareTiles : function() {
+    prepareTiles: function () {
         var rows = Math.ceil(this.height / this.tileSize) + 1;
         var cols = Math.ceil(this.width / this.tileSize) + 1;
 
@@ -327,13 +329,13 @@ PanoJS.prototype = {
                  * qx/qy represents the quadrant location of the tile
                  */
                 var tile = {
-                    'element' : null,
-                    'posx' : 0,
-                    'posy' : 0,
-                    'xIndex' : c,
-                    'yIndex' : r,
-                    'qx' : c,
-                    'qy' : r
+                    'element': null,
+                    'posx': 0,
+                    'posy': 0,
+                    'xIndex': c,
+                    'yIndex': r,
+                    'qx': c,
+                    'qy': r
                 };
 
                 tileCol.push(tile);
@@ -358,10 +360,10 @@ PanoJS.prototype = {
      * viewer, taking into account the motion offsets, which
      * are calculated by a motion event handler.
      */
-    positionTiles : function(motion, reset) {
+    positionTiles: function (motion, reset) {
         // default to no motion, just setup tiles
         if (typeof motion == 'undefined') {
-            motion = { 'x' : 0, 'y' : 0 };
+            motion = { 'x': 0, 'y': 0 };
         }
 
         for (var c = 0; c < this.tiles.length; c++) {
@@ -456,7 +458,7 @@ PanoJS.prototype = {
      * routine, delaying the appearance of the tile until it is fully
      * loaded, if configured to do so.
      */
-    assignTileImage : function(tile, forceBlankImage) {
+    assignTileImage: function (tile, forceBlankImage) {
         var tileImgId, src;
         var useBlankImage = (forceBlankImage ? true : false);
 
@@ -494,9 +496,11 @@ PanoJS.prototype = {
         }
 
         if (useBlankImage || !PanoJS.USE_LOADER_IMAGE || tileImg.complete || (tileImg.image && tileImg.image.complete)) {
-            tileImg.onload = function() {};
+            tileImg.onload = function () {
+            };
             if (tileImg.image) {
-                tileImg.image.onload = function() {};
+                tileImg.image.onload = function () {
+                };
             }
 
             if (tileImg.parentNode == null) {
@@ -514,7 +518,7 @@ PanoJS.prototype = {
 
             var well = this.well;
             tile.element = well.appendChild(loadingImg);
-            tileImg.onload = function() {
+            tileImg.onload = function () {
                 // make sure our destination is still present
                 if (loadingImg.parentNode && loadingImg.targetSrc == tileImgId) {
                     tileImg.style.top = loadingImg.style.top;
@@ -523,7 +527,8 @@ PanoJS.prototype = {
                     tile.element = tileImg;
                 }
 
-                tileImg.onload = function() {};
+                tileImg.onload = function () {
+                };
                 return false;
             };
 
@@ -537,7 +542,7 @@ PanoJS.prototype = {
         }
     },
 
-    createPrototype : function(src) {
+    createPrototype: function (src) {
         var img = document.createElement('img');
         img.src = src;
         img.relativeSrc = src;
@@ -547,19 +552,19 @@ PanoJS.prototype = {
         return img;
     },
 
-    addViewerMovedListener : function(listener) {
+    addViewerMovedListener: function (listener) {
         this.viewerMovedListeners.push(listener);
     },
 
-    addViewerZoomedListener : function(listener) {
+    addViewerZoomedListener: function (listener) {
         this.viewerZoomedListeners.push(listener);
     },
 
     /**
      * Notify listeners of a zoom event on the viewer.
      */
-    notifyViewerZoomed : function() {
-        var percentage = (100/(this.maxZoomLevel + 1)) * (this.zoomLevel + 1);
+    notifyViewerZoomed: function () {
+        var percentage = (100 / (this.maxZoomLevel + 1)) * (this.zoomLevel + 1);
         for (var i = 0; i < this.viewerZoomedListeners.length; i++) {
             this.viewerZoomedListeners[i].viewerZoomed(
                 new PanoJS.ZoomEvent(this.x, this.y, this.zoomLevel, percentage)
@@ -570,9 +575,9 @@ PanoJS.prototype = {
     /**
      * Notify listeners of a move event on the viewer.
      */
-    notifyViewerMoved : function(coords) {
+    notifyViewerMoved: function (coords) {
         if (typeof coords == 'undefined') {
-            coords = { 'x' : 0, 'y' : 0 };
+            coords = { 'x': 0, 'y': 0 };
         }
 
         for (var i = 0; i < this.viewerMovedListeners.length; i++) {
@@ -585,7 +590,7 @@ PanoJS.prototype = {
         }
     },
 
-    zoom : function(direction) {
+    zoom: function (direction) {
         // ensure we are not zooming out of range
         if (this.zoomLevel + direction < 0) {
             if (PanoJS.MSG_BEYOND_MIN_ZOOM) {
@@ -602,16 +607,16 @@ PanoJS.prototype = {
 
         this.blank();
 
-        var coords = { 'x' : Math.floor(this.width / 2), 'y' : Math.floor(this.height / 2) };
+        var coords = { 'x': Math.floor(this.width / 2), 'y': Math.floor(this.height / 2) };
 
         var before = {
-            'x' : (coords.x - this.x),
-            'y' : (coords.y - this.y)
+            'x': (coords.x - this.x),
+            'y': (coords.y - this.y)
         };
 
         var after = {
-            'x' : Math.floor(before.x * Math.pow(2, direction)),
-            'y' : Math.floor(before.y * Math.pow(2, direction))
+            'x': Math.floor(before.x * Math.pow(2, direction)),
+            'y': Math.floor(before.y * Math.pow(2, direction))
         };
 
         this.x = coords.x - after.x;
@@ -627,7 +632,7 @@ PanoJS.prototype = {
      * Clear all the tiles from the well for a complete reinitialization of the
      * viewer. At this point the viewer is not considered to be initialized.
      */
-    clear : function() {
+    clear: function () {
         this.blank();
         this.initialized = false;
         this.tiles = [];
@@ -637,12 +642,14 @@ PanoJS.prototype = {
      * Remove all tiles from the well, which effectively "hides"
      * them for a repaint.
      */
-    blank : function() {
+    blank: function () {
         for (imgId in this.cache) {
             var img = this.cache[imgId];
-            img.onload = function() {};
+            img.onload = function () {
+            };
             if (img.image) {
-                img.image.onload = function() {};
+                img.image.onload = function () {
+                };
             }
 
             if (img.parentNode != null) {
@@ -655,8 +662,8 @@ PanoJS.prototype = {
      * Method specifically for handling a mouse move event.  A direct
      * movement of the viewer can be achieved by calling positionTiles() directly.
      */
-    moveViewer : function(coords) {
-        this.positionTiles({ 'x' : (coords.x - this.mark.x), 'y' : (coords.y - this.mark.y) });
+    moveViewer: function (coords) {
+        this.positionTiles({ 'x': (coords.x - this.mark.x), 'y': (coords.y - this.mark.y) });
         this.notifyViewerMoved(coords);
     },
 
@@ -668,15 +675,15 @@ PanoJS.prototype = {
      * If absolute is specified, treat the point as relative to the entire
      * image, rather than only the viewable portion.
      */
-    recenter : function(coords, absolute) {
+    recenter: function (coords, absolute) {
         if (absolute) {
             coords.x += this.x;
             coords.y += this.y;
         }
 
         var motion = {
-            'x' : Math.floor((this.width / 2) - coords.x),
-            'y' : Math.floor((this.height / 2) - coords.y)
+            'x': Math.floor((this.width / 2) - coords.x),
+            'y': Math.floor((this.height / 2) - coords.y)
         };
 
         if (motion.x == 0 && motion.y == 0) {
@@ -698,8 +705,8 @@ PanoJS.prototype = {
             }
 
             motion = {
-                'x' : Math.min(x, Math.abs(target.x)) * (target.x < 0 ? -1 : 1),
-                'y' : Math.min(y, Math.abs(target.y)) * (target.y < 0 ? -1 : 1)
+                'x': Math.min(x, Math.abs(target.x)) * (target.x < 0 ? -1 : 1),
+                'y': Math.min(y, Math.abs(target.y)) * (target.y < 0 ? -1 : 1)
             };
         }
 
@@ -711,18 +718,20 @@ PanoJS.prototype = {
         }
 
         var newcoords = {
-            'x' : coords.x + motion.x,
-            'y' : coords.y + motion.y
+            'x': coords.x + motion.x,
+            'y': coords.y + motion.y
         };
 
         var self = this;
         // TODO: use an exponential growth rather than linear (should also depend on how far we are going)
         // FIXME: this could be optimized by calling positionTiles directly perhaps
         this.slideAcceleration += PanoJS.SLIDE_ACCELERATION_FACTOR;
-        this.slideMonitor = setTimeout(function() { self.recenter(newcoords); }, PanoJS.SLIDE_DELAY );
+        this.slideMonitor = setTimeout(function () {
+            self.recenter(newcoords);
+        }, PanoJS.SLIDE_DELAY);
     },
 
-    resize : function() {
+    resize: function () {
         // IE fires a premature resize event
         if (!this.initialized) {
             return;
@@ -735,8 +744,8 @@ PanoJS.prototype = {
         this.clear();
 
         var before = {
-            'x' : Math.floor(this.width / 2),
-            'y' : Math.floor(this.height / 2)
+            'x': Math.floor(this.width / 2),
+            'y': Math.floor(this.height / 2)
         };
 
         if (this.border >= 0) {
@@ -750,8 +759,8 @@ PanoJS.prototype = {
         this.prepareTiles();
 
         var after = {
-            'x' : Math.floor(this.width / 2),
-            'y' : Math.floor(this.height / 2)
+            'x': Math.floor(this.width / 2),
+            'y': Math.floor(this.height / 2)
         };
 
         if (this.border >= 0) {
@@ -769,28 +778,28 @@ PanoJS.prototype = {
      * offset of the viewer in the browser window (or frame).  This does
      * take into account the scroll offset of the page.
      */
-    resolveCoordinates : function(e) {
+    resolveCoordinates: function (e) {
         return {
-            'x' : (e.pageX || (e.clientX + (document.documentElement.scrollLeft || document.body.scrollLeft))) - this.left,
-            'y' : (e.pageY || (e.clientY + (document.documentElement.scrollTop || document.body.scrollTop))) - this.top
+            'x': (e.pageX || (e.clientX + (document.documentElement.scrollLeft || document.body.scrollLeft))) - this.left,
+            'y': (e.pageY || (e.clientY + (document.documentElement.scrollTop || document.body.scrollTop))) - this.top
         };
     },
 
-    press : function(coords) {
+    press: function (coords) {
         this.activate(true);
         this.mark = coords;
     },
 
-    release : function(coords) {
+    release: function (coords) {
         this.activate(false);
         var motion = {
-            'x' : (coords.x - this.mark.x),
-            'y' : (coords.y - this.mark.y)
+            'x': (coords.x - this.mark.x),
+            'y': (coords.y - this.mark.y)
         };
 
         this.x += motion.x;
         this.y += motion.y;
-        this.mark = { 'x' : 0, 'y' : 0 };
+        this.mark = { 'x': 0, 'y': 0 };
     },
 
     /**
@@ -798,17 +807,18 @@ PanoJS.prototype = {
      * not pressed.  This method localizes the changes that must be made to the
      * layers.
      */
-    activate : function(pressed) {
+    activate: function (pressed) {
         this.pressed = pressed;
         this.surface.style.cursor = (pressed ? PanoJS.GRABBING_MOUSE_CURSOR : PanoJS.GRAB_MOUSE_CURSOR);
-        this.surface.onmousemove = (pressed ? PanoJS.mouseMovedHandler : function() {});
+        this.surface.onmousemove = (pressed ? PanoJS.mouseMovedHandler : function () {
+        });
     },
 
     /**
      * Check whether the specified point exceeds the boundaries of
      * the viewer's primary image.
      */
-    pointExceedsBoundaries : function(coords) {
+    pointExceedsBoundaries: function (coords) {
         return (coords.x < this.x ||
             coords.y < this.y ||
             coords.x > (this.tileSize * Math.pow(2, this.zoomLevel) + this.x) ||
@@ -816,7 +826,7 @@ PanoJS.prototype = {
     },
 
     // QUESTION: where is the best place for this method to be invoked?
-    resetSlideMotion : function() {
+    resetSlideMotion: function () {
         // QUESTION: should this be > 0 ?
         if (this.slideMonitor != 0) {
             clearTimeout(this.slideMonitor);
@@ -827,20 +837,20 @@ PanoJS.prototype = {
     }
 };
 
-PanoJS.TileUrlProvider = function(baseUri, image) {
+PanoJS.TileUrlProvider = function (baseUri, image) {
     this.baseUri = baseUri;
-    this.image   = image;
+    this.image = image;
 };
 
 PanoJS.TileUrlProvider.prototype = {
-    assembleUrl: function(xIndex, yIndex, zoom) {
+    assembleUrl: function (xIndex, yIndex, zoom) {
         return this.baseUri + '?tile=' +
-               zoom + '-' + xIndex + '-' + yIndex +
-               '&image=' + encodeURIComponent(this.image);
+            zoom + '-' + xIndex + '-' + yIndex +
+            '&image=' + encodeURIComponent(this.image);
     }
 };
 
-PanoJS.mousePressedHandler = function(e) {
+PanoJS.mousePressedHandler = function (e) {
     e = e ? e : window.event;
     // only grab on left-click
     if (e.button < 2) {
@@ -858,7 +868,7 @@ PanoJS.mousePressedHandler = function(e) {
     return false;
 };
 
-PanoJS.mouseReleasedHandler = function(e) {
+PanoJS.mouseReleasedHandler = function (e) {
     e = e ? e : window.event;
     var self = this.backingBean;
     if (self.pressed) {
@@ -867,7 +877,7 @@ PanoJS.mouseReleasedHandler = function(e) {
     }
 };
 
-PanoJS.mouseMovedHandler = function(e) {
+PanoJS.mouseMovedHandler = function (e) {
     e = e ? e : window.event;
     var self = this.backingBean;
     self.moveCount++;
@@ -876,37 +886,37 @@ PanoJS.mouseMovedHandler = function(e) {
     }
 };
 
-PanoJS.zoomInHandler = function(e) {
+PanoJS.zoomInHandler = function (e) {
     e = e ? e : window.event;
     var self = this.parentNode.parentNode.backingBean;
     self.zoom(1);
     return false;
 };
 
-PanoJS.zoomOutHandler = function(e) {
+PanoJS.zoomOutHandler = function (e) {
     e = e ? e : window.event;
     var self = this.parentNode.parentNode.backingBean;
     self.zoom(-1);
     return false;
 };
 
-PanoJS.maximizeHandler = function(e) {
-    var self    = this.parentNode.parentNode.backingBean;
+PanoJS.maximizeHandler = function (e) {
+    var self = this.parentNode.parentNode.backingBean;
     var $viewer = jQuery(self.viewer);
 
-    if(self.is_maximized){
+    if (self.is_maximized) {
         // restore original style
         $viewer.css(self.originalCSS);
         self.resize();
         self.is_maximized = false;
-    }else{
+    } else {
         // remember original style
         self.originalCSS = {};
         self.originalCSS.position = $viewer.css('position');
-        self.originalCSS.top      = $viewer.css('top');
-        self.originalCSS.left     = $viewer.css('left');
-        self.originalCSS.width    = $viewer.css('width');
-        self.originalCSS.height   = $viewer.css('height');
+        self.originalCSS.top = $viewer.css('top');
+        self.originalCSS.left = $viewer.css('left');
+        self.originalCSS.width = $viewer.css('width');
+        self.originalCSS.height = $viewer.css('height');
 
         // set new style
         $viewer.css({
@@ -923,7 +933,7 @@ PanoJS.maximizeHandler = function(e) {
     }
 };
 
-PanoJS.doubleClickHandler = function(e) {
+PanoJS.doubleClickHandler = function (e) {
     e = e ? e : window.event;
     var self = this.backingBean;
     coords = self.resolveCoordinates(e);
@@ -933,51 +943,51 @@ PanoJS.doubleClickHandler = function(e) {
     }
 };
 
-PanoJS.keyboardMoveHandler = function(e) {
+PanoJS.keyboardMoveHandler = function (e) {
     e = e ? e : window.event;
     for (var i = 0; i < PanoJS.VIEWERS.length; i++) {
         var viewer = PanoJS.VIEWERS[i];
         if (e.keyCode == 38)
-                viewer.positionTiles({'x': 0,'y': -PanoJS.MOVE_THROTTLE}, true);
+            viewer.positionTiles({'x': 0, 'y': -PanoJS.MOVE_THROTTLE}, true);
         if (e.keyCode == 39)
-                viewer.positionTiles({'x': -PanoJS.MOVE_THROTTLE,'y': 0}, true);
+            viewer.positionTiles({'x': -PanoJS.MOVE_THROTTLE, 'y': 0}, true);
         if (e.keyCode == 40)
-                viewer.positionTiles({'x': 0,'y': PanoJS.MOVE_THROTTLE}, true);
+            viewer.positionTiles({'x': 0, 'y': PanoJS.MOVE_THROTTLE}, true);
         if (e.keyCode == 37)
-                viewer.positionTiles({'x': PanoJS.MOVE_THROTTLE,'y': 0}, true);
+            viewer.positionTiles({'x': PanoJS.MOVE_THROTTLE, 'y': 0}, true);
     }
 };
 
-PanoJS.keyboardZoomHandler = function(e) {
+PanoJS.keyboardZoomHandler = function (e) {
     e = e ? e : window.event;
     for (var i = 0; i < PanoJS.VIEWERS.length; i++) {
         var viewer = PanoJS.VIEWERS[i];
         if (e.keyCode == 109)
-                viewer.zoom(-1);
+            viewer.zoom(-1);
         if (e.keyCode == 107)
-                viewer.zoom(1);
+            viewer.zoom(1);
     }
 };
 
-PanoJS.MoveEvent = function(x, y) {
+PanoJS.MoveEvent = function (x, y) {
     this.x = x;
     this.y = y;
 };
 
-PanoJS.ZoomEvent = function(x, y, level, percentage) {
+PanoJS.ZoomEvent = function (x, y, level, percentage) {
     this.x = x;
     this.y = y;
     this.percentage = percentage;
     this.level = level;
 };
 
-jQuery(function(){
+jQuery(function () {
     var $panos = jQuery('div.panoview_plugin');
-    for(var i=0; i<$panos.length; i++){
+    for (var i = 0; i < $panos.length; i++) {
         var pano = $panos[i];
-        var opts = getElementsByClass('options',pano,'div')[0];
+        var opts = getElementsByClass('options', pano, 'div')[0];
         var conf;
-        eval('conf ='+opts.innerHTML); //JSON
+        eval('conf =' + opts.innerHTML); //JSON
 
         var viewerBean = new PanoJS(pano, conf);
         viewerBean.init();
