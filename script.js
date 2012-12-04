@@ -938,10 +938,10 @@ PanoJS.ZoomEvent = function(x, y, level, percentage) {
     this.level = level;
 };
 
-addInitEvent(function(){
-    var panos = getElementsByClass('panoview_plugin',document,'div');
-    for(var i=0; i<panos.length; i++){
-        var pano = panos[i];
+jQuery(function(){
+    var $panos = jQuery('div.panoview_plugin');
+    for(var i=0; i<$panos.length; i++){
+        var pano = $panos[i];
         var opts = getElementsByClass('options',pano,'div')[0];
         var conf;
         eval('conf ='+opts.innerHTML); //JSON
