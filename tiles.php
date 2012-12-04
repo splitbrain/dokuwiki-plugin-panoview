@@ -65,7 +65,7 @@ header('Content-type: image/jpeg');
 http_conditionalRequest(max($data['mtime'], $data['selft']));
 
 //use x-sendfile header to pass the delivery to compatible webservers
-if(http_sendfile($file)) exit;
+if(http_sendfile($data['cache'])) exit;
 
 // send file contents
 $fp = @fopen($data['cache'], "rb");
