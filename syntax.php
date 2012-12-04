@@ -126,6 +126,7 @@ class syntax_plugin_panoview extends DokuWiki_Syntax_Plugin {
               <p class="controls" style="display: none">
                 <span class="zoomIn" title="Zoom In">+</span>
                 <span class="zoomOut" title="Zoom Out">-</span>
+                <span class="maximize"><img src="'.DOKU_BASE.'/lib/plugins/panoview/gfx/window.gif" style="position: absolute; bottom: 4px; right: 5px;" title="Maximize"></span>
               </p>
                 <div class="options" style="display:none">'.hsc($json->encode($data)).'</div>
             </div>

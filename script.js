@@ -890,6 +890,39 @@ PanoJS.zoomOutHandler = function(e) {
     return false;
 };
 
+PanoJS.maximizeHandler = function(e) {
+    var self    = this.parentNode.parentNode.backingBean;
+    var $viewer = jQuery(self.viewer);
+
+    if(self.is_maximized){
+        // restore original style
+        $viewer.css(self.originalCSS);
+        self.resize();
+        self.is_maximized = false;
+    }else{
+        // remember original style
+        self.originalCSS = {};
+        self.originalCSS.position = $viewer.css('position');
+        self.originalCSS.top      = $viewer.css('top');
+        self.originalCSS.left     = $viewer.css('left');
+        self.originalCSS.width    = $viewer.css('width');
+        self.originalCSS.height   = $viewer.css('height');
+
+        // set new style
+        $viewer.css({
+            position: 'fixed',
+            top: 0,
+            left: 0,
+            width: '100%',
+            height: '100%',
+            'z-index': 999
+        });
+
+        self.resize();
+        self.is_maximized = true;
+    }
+};
+
 PanoJS.doubleClickHandler = function(e) {
     e = e ? e : window.event;
     var self = this.backingBean;
