@@ -79,7 +79,7 @@ class syntax_plugin_panoview extends DokuWiki_Syntax_Plugin {
         list($data['imageWidth'],$data['imageHeight']) = @getimagesize($file);
 
         // calculate maximum zoom
-        $data['maxZoom'] = floor(sqrt(max($data['imageWidth'],$data['imageHeight'])/$data['tileSize']))-1;
+        $data['maxZoom'] = ceil(sqrt(max($data['imageWidth'],$data['imageHeight'])/$data['tileSize']));
 
         // size
         if(preg_match('/\b(\d+)[xX](\d+)\b/',$params,$match)){

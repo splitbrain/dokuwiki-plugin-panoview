@@ -34,7 +34,10 @@ session_write_close();
     $data['scale'] = (int)pow(2,$data['zoom']);
     $data['max']   = max($data['width'],$data['height']);
     $data['inv']   = $data['max']  / ($data['ts'] * $data['scale']);
-    if($data['inv'] < 1.0) $pl->gfx_error('maxzoom');
+
+
+    if($data['inv'] < 0.5) $pl->gfx_error('maxzoom');
+    if($data['inv'] < 1.0) $data['inv'] = 1.0; // original size, no upscaling
 
     // calculate tile boundaries
     $data['tlx']   = (int) ($data['col'] * $data['ts'] * $data['inv']);
