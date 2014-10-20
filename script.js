@@ -985,7 +985,7 @@ jQuery(function () {
     var $panos = jQuery('div.panoview_plugin');
     for (var i = 0; i < $panos.length; i++) {
         var pano = $panos[i];
-        var opts = getElementsByClass('options', pano, 'div')[0];
+        var opts = jQuery('div.options', pano)[0];
         var conf;
         eval('conf =' + opts.innerHTML); //JSON
 
