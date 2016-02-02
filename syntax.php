@@ -45,7 +45,7 @@ class syntax_plugin_panoview extends DokuWiki_Syntax_Plugin {
     /**
      * Handle the match
      */
-    function handle($match, $state, $pos, &$handler) {
+    function handle($match, $state, $pos, Doku_Handler $handler) {
         global $ID;
 
         $data = array(
@@ -99,7 +99,7 @@ class syntax_plugin_panoview extends DokuWiki_Syntax_Plugin {
     /**
      * Create output
      */
-    function render($mode, &$R, $data) {
+    function render($mode, Doku_Renderer $R, $data) {
         if($mode != 'xhtml') return false;
         global $ID;
         require_once(DOKU_INC.'inc/JSON.php');
