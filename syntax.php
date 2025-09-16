@@ -5,13 +5,6 @@
  * @license    GPL 2 (http://www.gnu.org/licenses/gpl.html)
  * @author     Andreas Gohr <andi@splitbrain.org>
  */
-
-if(!defined('DOKU_INC')) define('DOKU_INC', realpath(dirname(__FILE__).'/../../').'/');
-if(!defined('DOKU_PLUGIN')) define('DOKU_PLUGIN', DOKU_INC.'lib/plugins/');
-require_once(DOKU_PLUGIN.'syntax.php');
-require_once(DOKU_INC.'inc/search.php');
-require_once(DOKU_INC.'inc/JpegMeta.php');
-
 class syntax_plugin_panoview extends DokuWiki_Syntax_Plugin {
 
     /**
@@ -102,8 +95,6 @@ class syntax_plugin_panoview extends DokuWiki_Syntax_Plugin {
     function render($mode, Doku_Renderer $R, $data) {
         if($mode != 'xhtml') return false;
         global $ID;
-        require_once(DOKU_INC.'inc/JSON.php');
-        $json = new JSON();
 
         $img = '<a href="'.ml($data['image'], array('id'=> $ID), false).'"><img src="'.
             ml($data['image'], array('w'=> $data['width'], 'h'=> $data['height'])).'" width="'.
@@ -126,7 +117,7 @@ class syntax_plugin_panoview extends DokuWiki_Syntax_Plugin {
                 <span class="zoomOut" title="Zoom Out">-</span>
                 <span class="maximize"><img src="'.DOKU_BASE.'lib/plugins/panoview/gfx/window.gif" style="position: absolute; bottom: 4px; right: 5px;" title="Maximize"></span>
               </p>
-                <div class="options" style="display:none">'.hsc($json->encode($data)).'</div>
+                <div class="options" style="display:none">'.hsc(json_encode($data)).'</div>
             </div>
         ';
 
@@ -257,7 +248,4 @@ class syntax_plugin_panoview extends DokuWiki_Syntax_Plugin {
         @rmdir($lockDir);
         @ignore_user_abort(0);
     }
-
 }
-
-//Setup VIM: ex: et ts=4 enc=utf-8 :

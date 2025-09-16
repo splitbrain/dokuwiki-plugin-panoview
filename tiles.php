@@ -7,15 +7,13 @@
 if(!defined('DOKU_INC')) define('DOKU_INC', realpath(dirname(__FILE__).'/../../../').'/');
 define('DOKU_DISABLE_GZIP_OUTPUT', 1);
 require_once(DOKU_INC.'inc/init.php');
-require_once(DOKU_INC.'inc/common.php');
-require_once(DOKU_INC.'inc/pageutils.php');
-require_once(DOKU_INC.'inc/httputils.php');
-require_once(DOKU_INC.'inc/pluginutils.php');
-require_once(DOKU_INC.'inc/auth.php');
 session_write_close();
 
+global $conf;
+
+
 /** @var syntax_plugin_panoview $pl */
-$pl =& plugin_load('syntax', 'panoview');
+$pl = plugin_load('syntax', 'panoview');
 
 $data = array();
 // get parameters
@@ -62,10 +60,10 @@ if($data['cachet'] < $data['mtime']) {
 
 // send
 header('Content-type: image/jpeg');
-http_conditionalRequest(max($data['mtime'], $data['selft']));
+http_conditionalRequest(max($data['mtime'], $data['cachet']));
 
 //use x-sendfile header to pass the delivery to compatible webservers
-if(http_sendfile($data['cache'])) exit;
+http_sendfile($data['cache']);
 
 // send file contents
 $fp = @fopen($data['cache'], "rb");
@@ -75,6 +73,3 @@ if($fp) {
     header("HTTP/1.0 500 Internal Server Error");
     print "Could not read tile - bad permissions?";
 }
-
-
-//Setup VIM: ex: et ts=4 enc=utf-8 :
