@@ -1,3 +1,3 @@
 <?php
-$meta['nice']  = array('string');
 
+$meta['nice']  = array('string');
